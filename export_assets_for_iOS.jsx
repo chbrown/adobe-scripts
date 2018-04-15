@@ -18,7 +18,7 @@ function createArtboardSelectionPanel(name, selected, parent) {
     group.orientation = 'column';
     group.alignChildren = 'left';
     groups.push(group);
-  };
+  }
 
   for (var i = 0; i < app.activeDocument.artboards.length; i++) {
     var destGroup = groups[Math.floor(i / CHECKBOXES_PER_PANEL)];
@@ -29,39 +29,40 @@ function createArtboardSelectionPanel(name, selected, parent) {
     cb.onClick = function() {
       if (this.value) {
         selected[this.item.name] = this.item;
-      } else {
+      }
+      else {
         delete selected[this.item.name];
       }
     };
   }
-};
+}
 
 function createSelectionPanel(name, array, selected, parent) {
   var panel = parent.add('panel', undefined, name);
   panel.alignChildren = 'left';
   panel.minimumSize.width = 400;
-  for(var i = 0; i < array.length;  i++) {
+  for (var i = 0; i < array.length; i++) {
     var cb = panel.add('checkbox', undefined, '\u00A0' + array[i].type);
     cb.item = array[i];
     cb.value = true;
     cb.onClick = function() {
-      if(this.value) {
+      if (this.value) {
         selected[this.item.name] = this.item;
         //alert("added " + this.item.name);
-      } else {
+      }
+      else {
         delete selected[this.item.name];
         //alert("deleted " + this.item.name);
       }
     };
     selected[array[i].name] = array[i];
   }
-};
+}
 
 function exportAppIcon(artboard, expFolder, name, iconSize, type) {
   var scale = iconSize * 100 / Math.abs(artboard.artboardRect[1] - artboard.artboardRect[3]);
 
-  if ( app.documents.length > 0 )
-  {
+  if (app.documents.length > 0) {
     var exportOptions = new ExportOptionsPNG24();
     var type = ExportType.PNG24;
     var fileSpec = new File(expFolder.fsName + '/' + name);
@@ -70,9 +71,9 @@ function exportAppIcon(artboard, expFolder, name, iconSize, type) {
     exportOptions.antiAliasing = false;
     exportOptions.transparency = true;
     exportOptions.artBoardClipping = true;
-    app.activeDocument.exportFile (fileSpec, type, exportOptions);
+    app.activeDocument.exportFile(fileSpec, type, exportOptions);
   }
-};
+}
 
 function exportImage(expFolder, activeArtboard, name, scale, type) {
   var exportOptions = new ExportOptionsPNG24();
@@ -83,8 +84,8 @@ function exportImage(expFolder, activeArtboard, name, scale, type) {
   exportOptions.antiAliasing = true;
   exportOptions.transparency = true;
   exportOptions.artBoardClipping = true;
-  app.activeDocument.exportFile (fileSpec, type, exportOptions);
-};
+  app.activeDocument.exportFile(fileSpec, type, exportOptions);
+}
 
 var selectedAppIconArtboards = {};
 var selectedAppIconExportOptions = {};
@@ -268,8 +269,8 @@ var iosImageExportOptions = [
 var folder = Folder.selectDialog('Select export directory');
 var document = app.activeDocument;
 
-if(document && folder) {
-  var dialog = new Window('dialog','Export assets for iOS');
+if (document && folder) {
+  var dialog = new Window('dialog', 'Export assets for iOS');
 
   var appIconGroup = dialog.add('group');
   appIconGroup.alignChildren = 'top';
@@ -292,7 +293,7 @@ if(document && folder) {
     this.parent.parent.close();
   };
 
-  cancelButton.onClick = function () {
+  cancelButton.onClick = function() {
     this.parent.parent.close();
   };
 
@@ -322,7 +323,7 @@ function exportAppIcons() {
       },
     };
 
-    for(var key in selectedAppIconExportOptions) {
+    for (var key in selectedAppIconExportOptions) {
       var item = selectedAppIconExportOptions[key];
       jsonFileObject.images.push({
         idiom: item.idiom,
@@ -339,10 +340,10 @@ function exportAppIcons() {
 
     for (var key in selectedAppIconExportOptions) {
       var item = selectedAppIconExportOptions[key];
-      exportAppIcon(artboard, expFolder,artboard.name + item.name, item.size, item.type);
+      exportAppIcon(artboard, expFolder, artboard.name + item.name, item.size, item.type);
     }
   }
-};
+}
 
 function exportImages() {
   for (var artboardName in selectedImagesArtboards) {
@@ -366,7 +367,7 @@ function exportImages() {
       },
     };
 
-    for(var key in selectedImageExportOptions) {
+    for (var key in selectedImageExportOptions) {
       var item = selectedImageExportOptions[key];
       jsonFileObject.images.push({
         idiom: 'universal',
@@ -387,4 +388,4 @@ function exportImages() {
       }
     }
   }
-};
+}

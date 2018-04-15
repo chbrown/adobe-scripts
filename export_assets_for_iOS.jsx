@@ -12,19 +12,19 @@ function createArtboardSelectionPanel(name, selected, parent) {
 
   var CHECKBOXES_PER_PANEL = 10;
   var totalPanels = Math.ceil(app.activeDocument.artboards.length / CHECKBOXES_PER_PANEL);
-  var groups = []
-  for (var i = 0; i < totalPanels; i++) {
+  var groups = [];
+  for (var panelIndex = 0; panelIndex < totalPanels; panelIndex++) {
     var group = panel.add('group', undefined, name);
     group.orientation = 'column';
     group.alignChildren = 'left';
     groups.push(group);
   }
 
-  for (var i = 0; i < app.activeDocument.artboards.length; i++) {
-    var destGroup = groups[Math.floor(i / CHECKBOXES_PER_PANEL)];
+  for (var artboardIndex = 0; artboardIndex < app.activeDocument.artboards.length; artboardIndex++) {
+    var destGroup = groups[Math.floor(artboardIndex / CHECKBOXES_PER_PANEL)];
 
-    var cb = destGroup.add('checkbox', undefined, '\u00A0' + app.activeDocument.artboards[i].name)
-    cb.item = app.activeDocument.artboards[i];
+    var cb = destGroup.add('checkbox', undefined, '\u00A0' + app.activeDocument.artboards[artboardIndex].name);
+    cb.item = app.activeDocument.artboards[artboardIndex];
     cb.value = false;
     cb.onClick = function() {
       if (this.value) {
@@ -64,27 +64,27 @@ function exportAppIcon(artboard, expFolder, name, iconSize, type) {
 
   if (app.documents.length > 0) {
     var exportOptions = new ExportOptionsPNG24();
-    var type = ExportType.PNG24;
+    var exportType = ExportType.PNG24;
     var fileSpec = new File(expFolder.fsName + '/' + name);
     exportOptions.verticalScale = scale;
     exportOptions.horizontalScale = scale;
     exportOptions.antiAliasing = false;
     exportOptions.transparency = true;
     exportOptions.artBoardClipping = true;
-    app.activeDocument.exportFile(fileSpec, type, exportOptions);
+    app.activeDocument.exportFile(fileSpec, exportType, exportOptions);
   }
 }
 
 function exportImage(expFolder, activeArtboard, name, scale, type) {
   var exportOptions = new ExportOptionsPNG24();
-  var type = ExportType.PNG24;
+  var exportType = ExportType.PNG24;
   var fileSpec = new File(expFolder.fsName + '/' + activeArtboard.name + name + '.png');
   exportOptions.verticalScale = scale;
   exportOptions.horizontalScale = scale;
   exportOptions.antiAliasing = true;
   exportOptions.transparency = true;
   exportOptions.artBoardClipping = true;
-  app.activeDocument.exportFile(fileSpec, type, exportOptions);
+  app.activeDocument.exportFile(fileSpec, exportType, exportOptions);
 }
 
 var selectedAppIconArtboards = {};
@@ -353,7 +353,7 @@ function exportImages() {
     for (var key in selectedImageExportOptions) {
       if (selectedImageExportOptions.hasOwnProperty(key)) {
         var item = selectedImageExportOptions[key];
-        exportImage(expFolder, activeArtboard, item.name, item.scaleFactor, item.type)
+        exportImage(expFolder, activeArtboard, item.name, item.scaleFactor, item.type);
       }
     }
   }

@@ -269,37 +269,6 @@ var iosImageExportOptions = [
 var folder = Folder.selectDialog('Select export directory');
 var document = app.activeDocument;
 
-if (document && folder) {
-  var dialog = new Window('dialog', 'Export assets for iOS');
-
-  var appIconGroup = dialog.add('group');
-  appIconGroup.alignChildren = 'top';
-  createArtboardSelectionPanel('Select artboards to export as App Icons', selectedAppIconArtboards, appIconGroup);
-  createSelectionPanel('Export options for App Icon', iosAppIconExportOptions, selectedAppIconExportOptions, appIconGroup);
-
-  var imageGroup = dialog.add('group');
-  imageGroup.alignChildren = 'top';
-  createArtboardSelectionPanel('Select artboards to export as images', selectedImagesArtboards, imageGroup);
-  createSelectionPanel('Export options for Images', iosImageExportOptions, selectedImageExportOptions, imageGroup);
-
-  var buttonGroup = dialog.add('group');
-  var okButton = buttonGroup.add('button', undefined, 'Export');
-  var cancelButton = buttonGroup.add('button', undefined, 'Cancel');
-
-  okButton.onClick = function() {
-    exportAppIcons();
-    exportImages();
-
-    this.parent.parent.close();
-  };
-
-  cancelButton.onClick = function() {
-    this.parent.parent.close();
-  };
-
-  dialog.show();
-}
-
 function exportAppIcons() {
   for (var artboardName in selectedAppIconArtboards) {
     var artboard = app.activeDocument.artboards.getByName(artboardName);
@@ -388,4 +357,35 @@ function exportImages() {
       }
     }
   }
+}
+
+if (document && folder) {
+  var dialog = new Window('dialog', 'Export assets for iOS');
+
+  var appIconGroup = dialog.add('group');
+  appIconGroup.alignChildren = 'top';
+  createArtboardSelectionPanel('Select artboards to export as App Icons', selectedAppIconArtboards, appIconGroup);
+  createSelectionPanel('Export options for App Icon', iosAppIconExportOptions, selectedAppIconExportOptions, appIconGroup);
+
+  var imageGroup = dialog.add('group');
+  imageGroup.alignChildren = 'top';
+  createArtboardSelectionPanel('Select artboards to export as images', selectedImagesArtboards, imageGroup);
+  createSelectionPanel('Export options for Images', iosImageExportOptions, selectedImageExportOptions, imageGroup);
+
+  var buttonGroup = dialog.add('group');
+  var okButton = buttonGroup.add('button', undefined, 'Export');
+  var cancelButton = buttonGroup.add('button', undefined, 'Cancel');
+
+  okButton.onClick = function() {
+    exportAppIcons();
+    exportImages();
+
+    this.parent.parent.close();
+  };
+
+  cancelButton.onClick = function() {
+    this.parent.parent.close();
+  };
+
+  dialog.show();
 }

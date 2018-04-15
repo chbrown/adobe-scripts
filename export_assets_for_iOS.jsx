@@ -3,6 +3,89 @@
  */
 #include "json2.js"
 
+function createArtboardSelectionPanel(name, selected, parent) {
+  var panel = parent.add('panel', undefined, name);
+  panel.alignChildren = 'left';
+  panel.minimumSize.width = 300;
+  panel.orientation = 'row';
+  panel.alignChildren = 'top';
+
+  var CHECKBOXES_PER_PANEL = 10;
+  var totalPanels = Math.ceil(app.activeDocument.artboards.length / CHECKBOXES_PER_PANEL);
+  var groups = []
+  for (var i = 0; i < totalPanels; i++) {
+    var group = panel.add('group', undefined, name);
+    group.orientation = 'column';
+    group.alignChildren = 'left';
+    groups.push(group);
+  };
+
+  for (var i = 0; i < app.activeDocument.artboards.length; i++) {
+    var destGroup = groups[Math.floor(i / CHECKBOXES_PER_PANEL)];
+
+    var cb = destGroup.add('checkbox', undefined, '\u00A0' + app.activeDocument.artboards[i].name)
+    cb.item = app.activeDocument.artboards[i];
+    cb.value = false;
+    cb.onClick = function() {
+      if (this.value) {
+        selected[this.item.name] = this.item;
+      } else {
+        delete selected[this.item.name];
+      }
+    };
+  }
+};
+
+function createSelectionPanel(name, array, selected, parent) {
+  var panel = parent.add('panel', undefined, name);
+  panel.alignChildren = 'left';
+  panel.minimumSize.width = 400;
+  for(var i = 0; i < array.length;  i++) {
+    var cb = panel.add('checkbox', undefined, '\u00A0' + array[i].type);
+    cb.item = array[i];
+    cb.value = true;
+    cb.onClick = function() {
+      if(this.value) {
+        selected[this.item.name] = this.item;
+        //alert("added " + this.item.name);
+      } else {
+        delete selected[this.item.name];
+        //alert("deleted " + this.item.name);
+      }
+    };
+    selected[array[i].name] = array[i];
+  }
+};
+
+function exportAppIcon(artboard, expFolder, name, iconSize, type) {
+  var scale = iconSize * 100 / Math.abs(artboard.artboardRect[1] - artboard.artboardRect[3]);
+
+  if ( app.documents.length > 0 )
+  {
+    var exportOptions = new ExportOptionsPNG24();
+    var type = ExportType.PNG24;
+    var fileSpec = new File(expFolder.fsName + '/' + name);
+    exportOptions.verticalScale = scale;
+    exportOptions.horizontalScale = scale;
+    exportOptions.antiAliasing = false;
+    exportOptions.transparency = true;
+    exportOptions.artBoardClipping = true;
+    app.activeDocument.exportFile (fileSpec, type, exportOptions);
+  }
+};
+
+function exportImage(expFolder, activeArtboard, name, scale, type) {
+  var exportOptions = new ExportOptionsPNG24();
+  var type = ExportType.PNG24;
+  var fileSpec = new File(expFolder.fsName + '/' + activeArtboard.name + name + '.png');
+  exportOptions.verticalScale = scale;
+  exportOptions.horizontalScale = scale;
+  exportOptions.antiAliasing = true;
+  exportOptions.transparency = true;
+  exportOptions.artBoardClipping = true;
+  app.activeDocument.exportFile (fileSpec, type, exportOptions);
+};
+
 var selectedAppIconArtboards = {};
 var selectedAppIconExportOptions = {};
 
@@ -261,23 +344,6 @@ function exportAppIcons() {
   }
 };
 
-function exportAppIcon(artboard, expFolder, name, iconSize, type) {
-  var scale = iconSize * 100 / Math.abs(artboard.artboardRect[1] - artboard.artboardRect[3]);
-
-  if ( app.documents.length > 0 )
-  {
-    var exportOptions = new ExportOptionsPNG24();
-    var type = ExportType.PNG24;
-    var fileSpec = new File(expFolder.fsName + '/' + name);
-    exportOptions.verticalScale = scale;
-    exportOptions.horizontalScale = scale;
-    exportOptions.antiAliasing = false;
-    exportOptions.transparency = true;
-    exportOptions.artBoardClipping = true;
-    app.activeDocument.exportFile (fileSpec, type, exportOptions);
-  }
-};
-
 function exportImages() {
   for (var artboardName in selectedImagesArtboards) {
     var activeArtboard = app.activeDocument.artboards.getByName(artboardName);
@@ -320,71 +386,5 @@ function exportImages() {
         exportImage(expFolder, activeArtboard, item.name, item.scaleFactor, item.type)
       }
     }
-  }
-};
-
-function exportImage(expFolder, activeArtboard, name, scale, type) {
-  var exportOptions = new ExportOptionsPNG24();
-  var type = ExportType.PNG24;
-  var fileSpec = new File(expFolder.fsName + '/' + activeArtboard.name + name + '.png');
-  exportOptions.verticalScale = scale;
-  exportOptions.horizontalScale = scale;
-  exportOptions.antiAliasing = true;
-  exportOptions.transparency = true;
-  exportOptions.artBoardClipping = true;
-  app.activeDocument.exportFile (fileSpec, type, exportOptions);
-};
-
-function createArtboardSelectionPanel(name, selected, parent) {
-  var panel = parent.add('panel', undefined, name);
-  panel.alignChildren = 'left';
-  panel.minimumSize.width = 300;
-  panel.orientation = 'row';
-  panel.alignChildren = 'top';
-
-  var CHECKBOXES_PER_PANEL = 10;
-  var totalPanels = Math.ceil(app.activeDocument.artboards.length / CHECKBOXES_PER_PANEL);
-  var groups = []
-  for (var i = 0; i < totalPanels; i++) {
-    var group = panel.add('group', undefined, name);
-    group.orientation = 'column';
-    group.alignChildren = 'left';
-    groups.push(group);
-  };
-
-  for (var i = 0; i < app.activeDocument.artboards.length; i++) {
-    var destGroup = groups[Math.floor(i / CHECKBOXES_PER_PANEL)];
-
-    var cb = destGroup.add('checkbox', undefined, '\u00A0' + app.activeDocument.artboards[i].name)
-    cb.item = app.activeDocument.artboards[i];
-    cb.value = false;
-    cb.onClick = function() {
-      if (this.value) {
-        selected[this.item.name] = this.item;
-      } else {
-        delete selected[this.item.name];
-      }
-    };
-  }
-};
-
-function createSelectionPanel(name, array, selected, parent) {
-  var panel = parent.add('panel', undefined, name);
-  panel.alignChildren = 'left';
-  panel.minimumSize.width = 400;
-  for(var i = 0; i < array.length;  i++) {
-    var cb = panel.add('checkbox', undefined, '\u00A0' + array[i].type);
-    cb.item = array[i];
-    cb.value = true;
-    cb.onClick = function() {
-      if(this.value) {
-        selected[this.item.name] = this.item;
-        //alert("added " + this.item.name);
-      } else {
-        delete selected[this.item.name];
-        //alert("deleted " + this.item.name);
-      }
-    };
-    selected[array[i].name] = array[i];
   }
 };

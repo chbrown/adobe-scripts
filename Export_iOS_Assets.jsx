@@ -59,7 +59,7 @@ function createSelectionPanel(name, array, selected, parent) {
   }
 }
 
-function exportAppIcon(artboard, expFolder, name, iconSize, type) {
+function exportAppIcon(artboard, expFolder, name, iconSize) {
   var scale = iconSize * 100 / Math.abs(artboard.artboardRect[1] - artboard.artboardRect[3]);
 
   if (app.documents.length > 0) {
@@ -75,7 +75,7 @@ function exportAppIcon(artboard, expFolder, name, iconSize, type) {
   }
 }
 
-function exportImage(expFolder, activeArtboard, name, scale, type) {
+function exportImage(expFolder, activeArtboard, name, scale) {
   var exportOptions = new ExportOptionsPNG24();
   var exportType = ExportType.PNG24;
   var fileSpec = new File(expFolder.fsName + '/' + activeArtboard.name + name + '.png');
@@ -309,7 +309,7 @@ function exportAppIcons() {
 
     for (var key in selectedAppIconExportOptions) {
       var item = selectedAppIconExportOptions[key];
-      exportAppIcon(artboard, expFolder, artboard.name + item.name, item.size, item.type);
+      exportAppIcon(artboard, expFolder, artboard.name + item.name, item.size);
     }
   }
 }
@@ -353,7 +353,7 @@ function exportImages() {
     for (var key in selectedImageExportOptions) {
       if (selectedImageExportOptions.hasOwnProperty(key)) {
         var item = selectedImageExportOptions[key];
-        exportImage(expFolder, activeArtboard, item.name, item.scaleFactor, item.type);
+        exportImage(expFolder, activeArtboard, item.name, item.scaleFactor);
       }
     }
   }

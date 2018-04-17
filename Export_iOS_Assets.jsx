@@ -359,7 +359,7 @@ function exportImages() {
   }
 }
 
-if (document && folder) {
+function main() {
   var dialog = new Window('dialog', 'Export assets for iOS');
 
   var appIconGroup = dialog.add('group');
@@ -388,4 +388,8 @@ if (document && folder) {
   };
 
   dialog.show();
+}
+
+if (document && folder) {
+  main();
 }

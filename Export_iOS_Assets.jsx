@@ -266,10 +266,7 @@ var iosImageExportOptions = [
   },
 ];
 
-var folder = Folder.selectDialog('Select export directory');
-var document = app.activeDocument;
-
-function exportAppIcons() {
+function exportAppIcons(folder) {
   for (var artboardName in selectedAppIconArtboards) {
     var artboard = app.activeDocument.artboards.getByName(artboardName);
     var activeIndex = 0;
@@ -314,7 +311,7 @@ function exportAppIcons() {
   }
 }
 
-function exportImages() {
+function exportImages(folder) {
   for (var artboardName in selectedImagesArtboards) {
     var activeArtboard = app.activeDocument.artboards.getByName(artboardName);
     var activeIndex = 0;
@@ -359,7 +356,7 @@ function exportImages() {
   }
 }
 
-function main() {
+function createDialog(folder) {
   var dialog = new Window('dialog', 'Export assets for iOS');
 
   var appIconGroup = dialog.add('group');
@@ -377,8 +374,8 @@ function main() {
   var cancelButton = buttonGroup.add('button', undefined, 'Cancel');
 
   okButton.onClick = function() {
-    exportAppIcons();
-    exportImages();
+    exportAppIcons(folder);
+    exportImages(folder);
 
     this.parent.parent.close();
   };
@@ -390,6 +387,13 @@ function main() {
   dialog.show();
 }
 
-if (document && folder) {
+function main() {
+  var folder = Folder.selectDialog('Select export directory');
+  if (folder) {
+    createDialog(folder);
+  }
+}
+
+if (app.activeDocument) {
   main();
 }

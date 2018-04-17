@@ -22,9 +22,10 @@ function createArtboardSelectionPanel(name, selected, parent) {
 
   for (var artboardIndex = 0; artboardIndex < app.activeDocument.artboards.length; artboardIndex++) {
     var destGroup = groups[Math.floor(artboardIndex / CHECKBOXES_PER_PANEL)];
+    var artboard = app.activeDocument.artboards[artboardIndex];
 
-    var cb = destGroup.add('checkbox', undefined, '\u00A0' + app.activeDocument.artboards[artboardIndex].name);
-    cb.item = app.activeDocument.artboards[artboardIndex];
+    var cb = destGroup.add('checkbox', undefined, '\u00A0' + artboard.name);
+    cb.item = artboard;
     cb.value = false;
     cb.onClick = function() {
       if (this.value) {
@@ -69,7 +70,7 @@ function prepareExportOptions(scale, antiAliasing) {
   return options;
 }
 
-function exportAppIcon(artboard, expFolder, name, iconSize) {
+function exportAppIcon(expFolder, artboard, name, iconSize) {
   var scale = iconSize * 100 / Math.abs(artboard.artboardRect[1] - artboard.artboardRect[3]);
 
   if (app.documents.length > 0) {
@@ -80,10 +81,10 @@ function exportAppIcon(artboard, expFolder, name, iconSize) {
   }
 }
 
-function exportImage(expFolder, activeArtboard, name, scale) {
+function exportImage(expFolder, artboard, name, scale) {
   var exportOptions = prepareExportOptions(scale, true);
   var exportType = ExportType.PNG24;
-  var fileSpec = new File(expFolder.fsName + '/' + activeArtboard.name + name + '.png');
+  var fileSpec = new File(expFolder.fsName + '/' + artboard.name + name + '.png');
   app.activeDocument.exportFile(fileSpec, exportType, exportOptions);
 }
 
@@ -306,7 +307,7 @@ function exportAppIcons(folder) {
 
     for (var key in selectedAppIconExportOptions) {
       var item = selectedAppIconExportOptions[key];
-      exportAppIcon(artboard, expFolder, artboard.name + item.name, item.size);
+      exportAppIcon(expFolder, artboard, artboard.name + item.name, item.size);
     }
   }
 }

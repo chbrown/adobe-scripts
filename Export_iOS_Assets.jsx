@@ -59,31 +59,31 @@ function createSelectionPanel(name, array, selected, parent) {
   }
 }
 
+function prepareExportOptions(scale, antiAliasing) {
+  var options = new ExportOptionsPNG24();
+  options.verticalScale = scale;
+  options.horizontalScale = scale;
+  options.antiAliasing = antiAliasing;
+  options.transparency = true;
+  options.artBoardClipping = true;
+  return options;
+}
+
 function exportAppIcon(artboard, expFolder, name, iconSize) {
   var scale = iconSize * 100 / Math.abs(artboard.artboardRect[1] - artboard.artboardRect[3]);
 
   if (app.documents.length > 0) {
-    var exportOptions = new ExportOptionsPNG24();
+    var exportOptions = prepareExportOptions(scale, false);
     var exportType = ExportType.PNG24;
     var fileSpec = new File(expFolder.fsName + '/' + name);
-    exportOptions.verticalScale = scale;
-    exportOptions.horizontalScale = scale;
-    exportOptions.antiAliasing = false;
-    exportOptions.transparency = true;
-    exportOptions.artBoardClipping = true;
     app.activeDocument.exportFile(fileSpec, exportType, exportOptions);
   }
 }
 
 function exportImage(expFolder, activeArtboard, name, scale) {
-  var exportOptions = new ExportOptionsPNG24();
+  var exportOptions = prepareExportOptions(scale, true);
   var exportType = ExportType.PNG24;
   var fileSpec = new File(expFolder.fsName + '/' + activeArtboard.name + name + '.png');
-  exportOptions.verticalScale = scale;
-  exportOptions.horizontalScale = scale;
-  exportOptions.antiAliasing = true;
-  exportOptions.transparency = true;
-  exportOptions.artBoardClipping = true;
   app.activeDocument.exportFile(fileSpec, exportType, exportOptions);
 }
 

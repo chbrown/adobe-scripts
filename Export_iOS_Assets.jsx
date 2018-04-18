@@ -281,18 +281,11 @@ function exportAppIcons(folder) {
       expFolder.create();
     }
 
-    var jsonFileObject = {
-      images: [],
-      info: {
-        version: 1,
-        author: 'xcode',
-      },
-    };
-
+    var images = [];
     for (var key in selectedAppIconExportOptions) {
       var item = selectedAppIconExportOptions[key];
       exportAppIcon(expFolder, artboard, artboard.name + item.name, item.size);
-      jsonFileObject.images.push({
+      images.push({
         idiom: item.idiom,
         size: item.sizeJSON,
         filename: artboard.name + item.name,
@@ -300,7 +293,13 @@ function exportAppIcons(folder) {
       });
     }
 
-    writeJSONFile(expFolder.fsName + '/Contents.json', jsonFileObject);
+    writeJSONFile(expFolder.fsName + '/Contents.json', {
+      images: images,
+      info: {
+        version: 1,
+        author: 'xcode',
+      },
+    });
   }
 }
 
@@ -318,25 +317,24 @@ function exportImages(folder) {
       expFolder.create();
     }
 
-    var jsonFileObject = {
-      images: [],
-      info: {
-        version: 1,
-        author: 'xcode',
-      },
-    };
-
+    var images = [];
     for (var key in selectedImageExportOptions) {
       var item = selectedImageExportOptions[key];
       exportImage(expFolder, activeArtboard, item.name, item.scaleFactor);
-      jsonFileObject.images.push({
+      images.push({
         idiom: 'universal',
         scale: item.type,
         filename: activeArtboard.name + item.name + '.png',
       });
     }
 
-    writeJSONFile(expFolder.fsName + '/Contents.json', jsonFileObject);
+    writeJSONFile(expFolder.fsName + '/Contents.json', {
+      images: images,
+      info: {
+        version: 1,
+        author: 'xcode',
+      },
+    });
   }
 }
 

@@ -88,12 +88,6 @@ function exportImage(expFolder, artboard, name, scale) {
   app.activeDocument.exportFile(fileSpec, exportType, exportOptions);
 }
 
-var selectedAppIconArtboards = {};
-var selectedAppIconExportOptions = {};
-
-var selectedImagesArtboards = {};
-var selectedImageExportOptions = {};
-
 var iosAppIconExportOptions = [
   {
     name: '-20@2x.png',
@@ -266,6 +260,12 @@ var iosImageExportOptions = [
     type: '3x',
   },
 ];
+
+var selectedAppIconArtboards = {};
+var selectedAppIconExportOptions = {};
+
+var selectedImagesArtboards = {};
+var selectedImageExportOptions = {};
 
 function exportAppIcons(folder) {
   for (var artboardName in selectedAppIconArtboards) {

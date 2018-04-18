@@ -70,6 +70,13 @@ function prepareExportOptions(scale, antiAliasing) {
   return options;
 }
 
+function writeJSONFile(path, data) {
+  var file = new File(path);
+  file.open('w');
+  file.write(JSON.stringify(data, null, 2));
+  file.close();
+}
+
 function exportAppIcon(expFolder, artboard, name, iconSize) {
   var scale = iconSize * 100 / Math.abs(artboard.artboardRect[1] - artboard.artboardRect[3]);
 
@@ -300,10 +307,7 @@ function exportAppIcons(folder) {
       });
     }
 
-    var jsonFile = new File(expFolder.fsName + '/Contents.json');
-    jsonFile.open('w');
-    jsonFile.write(JSON.stringify(jsonFileObject, null, 2));
-    jsonFile.close();
+    writeJSONFile(expFolder.fsName + '/Contents.json', jsonFileObject);
 
     for (var key in selectedAppIconExportOptions) {
       var item = selectedAppIconExportOptions[key];
@@ -343,10 +347,7 @@ function exportImages(folder) {
       });
     }
 
-    var jsonFile = new File(expFolder.fsName + '/Contents.json');
-    jsonFile.open('w');
-    jsonFile.write(JSON.stringify(jsonFileObject, null, 2));
-    jsonFile.close();
+    writeJSONFile(expFolder.fsName + '/Contents.json', jsonFileObject);
 
     for (var key in selectedImageExportOptions) {
       var item = selectedImageExportOptions[key];

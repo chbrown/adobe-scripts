@@ -349,10 +349,8 @@ function exportImages(folder) {
     jsonFile.close();
 
     for (var key in selectedImageExportOptions) {
-      if (selectedImageExportOptions.hasOwnProperty(key)) {
-        var item = selectedImageExportOptions[key];
-        exportImage(expFolder, activeArtboard, item.name, item.scaleFactor);
-      }
+      var item = selectedImageExportOptions[key];
+      exportImage(expFolder, activeArtboard, item.name, item.scaleFactor);
     }
   }
 }

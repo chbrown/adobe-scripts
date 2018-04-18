@@ -299,6 +299,7 @@ function exportAppIcons(folder) {
 
     for (var key in selectedAppIconExportOptions) {
       var item = selectedAppIconExportOptions[key];
+      exportAppIcon(expFolder, artboard, artboard.name + item.name, item.size);
       jsonFileObject.images.push({
         idiom: item.idiom,
         size: item.sizeJSON,
@@ -308,11 +309,6 @@ function exportAppIcons(folder) {
     }
 
     writeJSONFile(expFolder.fsName + '/Contents.json', jsonFileObject);
-
-    for (var key in selectedAppIconExportOptions) {
-      var item = selectedAppIconExportOptions[key];
-      exportAppIcon(expFolder, artboard, artboard.name + item.name, item.size);
-    }
   }
 }
 
@@ -340,6 +336,7 @@ function exportImages(folder) {
 
     for (var key in selectedImageExportOptions) {
       var item = selectedImageExportOptions[key];
+      exportImage(expFolder, activeArtboard, item.name, item.scaleFactor);
       jsonFileObject.images.push({
         idiom: 'universal',
         scale: item.type,
@@ -348,11 +345,6 @@ function exportImages(folder) {
     }
 
     writeJSONFile(expFolder.fsName + '/Contents.json', jsonFileObject);
-
-    for (var key in selectedImageExportOptions) {
-      var item = selectedImageExportOptions[key];
-      exportImage(expFolder, activeArtboard, item.name, item.scaleFactor);
-    }
   }
 }
 

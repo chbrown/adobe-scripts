@@ -176,14 +176,6 @@ var iosAppIconExportOptions = [
     sizeJSON: '76x76',
     scale: '2x',
   },
-  //{
-  //     name: "-Small-40.png",
-  //     size: 40,
-  //     type: "Spotlight",
-  //     idiom: "iphone",
-  //     sizeJSON: "40x40",
-  //     scale: "1x"
-  // },
   {
     name: '-Small-40@2x.png',
     size: 80,

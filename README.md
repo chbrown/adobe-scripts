@@ -63,4 +63,4 @@ Images.xcassets
 
 ## License
 
-This repository is under the MIT license; see [`LICENSE`](LICENSE).
+See individual files for the applicable license.
